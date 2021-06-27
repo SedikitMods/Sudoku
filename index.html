@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+    <title>Sudoku</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="shortcut icon" href="src/sudoku.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="instructions">
+            <div class="inner-instr">
+                <h2>Терминология судоку</h2>
+                <span id="caption">Клетка:</span> Основной элемент судоку. Все клетки должны быть заполнены цифрами от 1 до 9. Каждая из клеток входит одновременно в ряд, колонку и область.<br><br>
+                <span id="caption">Группа:</span> Групп несколько: ряд — 9 горизонтальных клеток; колонка — 9 вертикальных клеток; область — малый квадрат размером 3×3 клетки. В каждом судоку 9 областей.<br><br>
+                <span id="caption">Сегмент:</span> Часть области — 3 горизонтальных или вертикальных клетки. В каждой области 6 сегментов — частей большого ряда или колонки.<br><br>
+                <span id="caption">Кандидаты:</span> Цифры, которые могут быть вписаны в клетку (на рисунке — мелким шрифтом). Когда все кандидаты, кроме одного, вычеркнуты, цифру можно вносить «на постоянной основе». Два кандидата — пара, три — трио, четыре — квартет.<br><br>
+                <h2>Способы решения судоку</h2>
+                За годы существования судоку было разработано множество подходов к решению. Мы предлагаем несколько методов, от простого — к сложному.<br><br>
+                <h3>1. Синглы (единственные варианты)</h3>
+                Синглы определяются после исключения цифр, которые уже вписаны в ряды, колонки или области. Таким способом решают простые судоку.<br><br>
+                <span id="caption">1.1. Очевидные синглы</span>
+                <img src="src/01.jpg" alt="SINGLE"><br>
+                Если путем исключения можно выявить единственно возможное число, сингл называют очевидным.<br><br>
+                Цифры 1, 5, 6, 9 исключены — они есть в ряду.<br>
+                2, 3, 8 — расположены в колонке.<br>
+                6, 7, 8 — могут присутствовать в области.<br>
+                Единственным кандидатом в клетке E6 остается 4.<br><br>
+                <span id="caption">1.2. Скрытые синглы</span>
+                <img src="src/02.jpg" alt="HIDDEN_SINGLE"><br>
+                Число можно вписать в клетку, если другое расположение в группе невозможно. Определить такую вероятность можно после расстановки кандидатов и выявления цифры, которая больше нигде не повторяется.<br><br>
+                В седьмом и девятом ряду 8 вписана изначально.<br>
+                8 есть в колонке А.<br>
+                В нижней левой области вписать 8 можно только в одну клетку — B8, поэтому остальных кандидатов нужно исключить.<br><br>
+                <h3>2. Исключение кандидатов</h3>
+                Этот способ позволяет сократить число возможных кандидатов, чтобы потом можно было найти единственное правильное значение.<br><br>
+                <span id="caption">2.1. Сегмент</span>
+                <img src="src/03.jpg" alt="SEGMENT"><br>
+                Если удалось определить, что число может быть вписано в единственную клетку, его исключают из кандидатов в ряду, колонке и области.<br><br>
+                В правой верхней области 6 должно находиться в сегментах G1 или H1 (других вариантов нет — второй ряд и третья колонка заняты), поэтому цифру можно исключит из кандидатов для клетки С1.<br><br>
+                <span id="caption">2.2. Сегмент 2</span>
+                <img src="src/04.jpg" alt="SEGMENT_2"><br>
+                Если число может находиться только в одной области, его нужно исключить из кандидатов в других клетках.<br><br>
+                Число 2 можно вписать в третий ряд второй области — D3 или E3. Поэтому 2 можно исключить из кандидатов в клетки первого и второго ряда этой области.<br><br>
+                С учетом уже назначенных чисел третьего ряда, а также колонок B и H, число 2 может находиться только во второй области в третьем ряду и его можно исключить из D1, E1, E2 и F2.<br><br>
+                <h3>3. Группы кандидатов</h3>
+                <span id="caption">3.1. Очевидные группы кандидатов</span>
+                <img src="src/05.jpg" alt="CANDIDATES"><br>
+                Если в группе кандидатов есть две клетки с одинаковыми парами, эти кандидаты не могут находиться в других клетках ряда, колонки или области.<br><br>
+                Пара 1/4 (второй ряд) повторяется в клетках G2 и H2. Один из кандидатов обязательно расположится в G2, другой — в H2. Это значит, что 1 и 4 можно исключить из остальных клеток ряда.<br><br>
+                Также пару 1/4 можно исключить из других клеток области.<br><br>
+                В трех клетках группы не содержатся другие кандидаты, кроме трех, значит эти числа могут быть исключены из остальных клеток группы.<br><br>
+                Три клетки группы не обязательно должны содержать все числа трио — в этих клетках не может быть других кандидатов.<br><br>
+                Во втором ряду в клетках A, С и G имеется трио 1, 4, 6, значит, данные клетки обязательно разместят одну из этих цифр. Следовательно, 1, 4, 6 не могут занимать другое место в ряду, их присутствие можно исключить.<br><br>
+                <img src="src/06.jpg" alt="CANDIDATES_2"><br>
+                В клетках A и C встречается пара 4/6. Таким образом, остальных кандидатов из этих двух клеток можно исключить — в одной из клеток обязательно разместится 4, в другой 6.<br><br>
+                Правило относится и к очевидным трио и квартетам, при этом клетки могут не содержать все числа из трио или квартета. Рассмотреть скрытые трио и, тем более, квартеты сложно, но встречаются они нечасто.<br><br>
+                <h3>4. Сложные методы</h3>
+                Сложность этих методов относится не к пониманию их сути, а к применению в решении судоку.<br><br>
+                <span id="caption">4.1. Связанные пары (бабочка)</span>
+                <img src="src/07.jpg" alt="BUTTERFLY"><br>
+                Если число возможно только в двух ячейках двух рядов (4 варианта), расположены они в двух колонках и формируют прямоугольник, кандидат может быть исключен из других клеток колонки.<br><br>
+                В переносе на колонки метод формулируется аналогично, но тогда нужно исключить кандидатов в рядах.<br>
+                Например, цифра 9 для колонок B и H может находиться только во втором и восьмом рядах (фиолетовые клетки). Из остальных клеток этих рядов 9 можно исключить.<br><br>
+                Рассмотрим колонку B. Если 9 не в B2, она может быть только в B8, для колонки H — наоборот. То есть, варианты расположения 9: B2 и H8 или B8 и H2, из остальных клеток этих рядов девятку можно исключить. Метод применим и к областям.<br><br>
+                <img src="src/08.jpg" style="width: 35%;" alt="BUTTERFLY_2"><br>
+                Этот метод может применяться к областям:<br><br>
+                В колонках B и C цифра 9 может находиться в ячейках B3, B9, C2 и C8.<br>
+                Поскольку B3 и C2, B9 и C8 находятся внутри одной области, 9 может быть исключена из остальных клеток этих двух областей.<br><br>
+                <span id="caption">4.2. Сложносвязанные пары (рыба)</span><br><br>
+                Метод похож на предыдущий, но сложнее. Его применяют, когда один из кандидатов присутствует в трех рядах (не более) и при этом — в одних и тех же трех колонках.
+                <img src="src/09.jpg" alt="FISH"><br>
+                Из остальных рядов этих трех колонок кандидата можно исключить. Аналогично метод применяется к трем колонкам, тогда кандидаты исключаются из рядов:<br><br>
+                2 встречается только в двух клетках колонок C, F и H. Эти клетки находятся в трех рядах — втором, четвертом и восьмом:<br>
+                Второй ряд. 2 может быть только в F2 или в H2,<br>
+                Четвертый ряд: C4 или H4.<br>
+                Восьмой ряд: C8 или F8.<br>
+                Из остальных клеток этих рядов 2 можно исключить.<br><br>
+                <span id="caption">4.3. Связанные кандидаты</span><br><br>
+                Кандидаты связаны, если число возможно только в двух клетках группы, ряда, колонки или области. Если один кандидат подтвердился, второй отпадает.
+                <img src="src/10.jpg" alt="RAPED_CANDIDATES"><br>
+                Когда несколько пар связанных кандидатов соединены, число можно исключить из других клеток — число в них не появится в любом случае.<br><br>
+                В колонке B число 7 может находиться B2 или B4.<br>
+                Аналогично в первом ряду C1 и H1 — если один кандидат верен, то другой нет.<br>
+                Эти связи кандидатов объединены в первой области.<br>
+                Если 7 находится в B4, ее можно исключить из H1. Если она не в B4, тогда в B2. Если не находится в C1, тогда в H1, но не в H7.<br><br>
+                В любом случае 7 не может находиться в H1.<br><br>
+                <span id="caption">4.4. Цепочки</span><br><br>
+                Метод используется, когда во многих клетках только два кандидата. Выбирая одного в начальной клетке, вы формируете цепочку выборов, которая приводит к удалению кандидата из какой-либо клетки.<br><br>
+                Если при выборе другого кандидата в начальной клетке вы приходите к удалению того же кандидата, он может быть удален.
+                <img src="src/11.jpg" alt="CHAINS"><br>
+                Например, если 3 верно в клетке B2, то выполняется цепочка заключений (красная линия):<br><br>
+                B2 — 3, D2 — 5, E3 — 7, E5 — 8, A5 — 5, таким образом 5 не находится в A4.<br>
+                Если же в B2 находится 2, тогда мы имеем (зеленая линия):<br><
+                B2 — 2, B4 — 5 и опять 5 не находится в A4.<br><br>
+                В любом случае кандидат 5 может быть исключен из клетки A4.<br><br>
+                <h3>5. Предположения</h3>
+                Иногда вышеперечисленные методы не помогают продвинуться в решении. Тогда можно выбрать кандидата в клетке и посмотреть, к чему приведет такой выбор. Если рассуждения заканчиваются тупиком, тогда придется вернуться в начало и попробовать другой вариант.<br><br>
+                Этот метод ближе к гаданию на кофейной гуще и обычно не используется при решении судоку.<br>
+            </div>
+        </div>
+        <table>
+            <tr>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+                <th>
+                    <form><input type="number" oninput="checkLength(this)"></form>
+                </th>
+            </tr>
+        </table>
+        <div class="btn">Решить!</div>
+        <div class="out"></div>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+</html>

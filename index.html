@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width">
-    <title>Sudoku</title>
+    <title>Судоку</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="shortcut icon" href="src/sudoku.ico" type="image/x-icon">
 </head>
 <body>
     <div class="wrapper">
+        <div class="heading"><h1>Судоку</h1></div>
         <div class="instructions">
             <div class="inner-instr">
-                <h2>Терминология судоку</h2>
+                <h2>Терминология</h2>
                 <span id="caption">Клетка:</span> Основной элемент судоку. Все клетки должны быть заполнены цифрами от 1 до 9. Каждая из клеток входит одновременно в ряд, колонку и область.<br><br>
                 <span id="caption">Группа:</span> Групп несколько: ряд — 9 горизонтальных клеток; колонка — 9 вертикальных клеток; область — малый квадрат размером 3×3 клетки. В каждом судоку 9 областей.<br><br>
                 <span id="caption">Сегмент:</span> Часть области — 3 горизонтальных или вертикальных клетки. В каждой области 6 сегментов — частей большого ряда или колонки.<br><br>
                 <span id="caption">Кандидаты:</span> Цифры, которые могут быть вписаны в клетку (на рисунке — мелким шрифтом). Когда все кандидаты, кроме одного, вычеркнуты, цифру можно вносить «на постоянной основе». Два кандидата — пара, три — трио, четыре — квартет.<br><br>
-                <h2>Способы решения судоку</h2>
+                <h2>Способы решения</h2>
                 За годы существования судоку было разработано множество подходов к решению. Мы предлагаем несколько методов, от простого — к сложному.<br><br>
                 <h3>1. Синглы (единственные варианты)</h3>
                 Синглы определяются после исключения цифр, которые уже вписаны в ряды, колонки или области. Таким способом решают простые судоку.<br><br>
@@ -103,7 +104,7 @@
         <table>
             <tr>
                 <th>
-                    <form><input type="number" oninput="checkLength(this)" oninput="checkLength(this)"></form>
+                    <form><input type="number" oninput="checkLength(this)"></form>
                 </th>
                 <th>
                     <form><input type="number" oninput="checkLength(this)"></form>
